@@ -35,7 +35,7 @@ export default class SignIn extends Component {
           <TouchableOpacity activeOpacity = { 0.8 } 
             style = { styles.visibilityBtn } 
             onPress = { this._managePasswordVisibility }>
-            <Image source = { ( this.state.hidePassword ) ? require('./assets/hide.png') : require('./assets/view.png') } style = { styles.btnImage } />
+            <Image source = { ( this.state.hidePassword ) ? require('../assets/hide.png') : require('../assets/view.png') } style = { styles.btnImage } />
           </TouchableOpacity>
         </View>
 
@@ -121,4 +121,4 @@ const styles = StyleSheet.create({
   }
 });
 
-// AppRegistry.registerComponent('TextInANest', () => TextInANest);
+AppRegistry.registerComponent('SignIn', () => SignIn);
