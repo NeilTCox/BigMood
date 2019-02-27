@@ -1,9 +1,13 @@
 import React from 'react';
-import { StyleSheet, Text, View , Dimensions} from 'react-native';
+import { AppRegistry, StyleSheet, Text, View , Dimensions} from 'react-native';
 import { TabView, TabBar, SceneMap } from 'react-native-tab-view';
 
+import NewUser from './components/NewUser';
+
 const TodayRoute = () => (
-  <View style={[styles.scene, { backgroundColor: '#ff4081' }]} />
+  <View style={[styles.scene, { backgroundColor: '#ff4081' }]}>
+    <NewUser />
+  </View>
 );
 const HistoryRoute = () => (
   <View style={[styles.scene, { backgroundColor: '#673ab7' }]} />
@@ -12,7 +16,7 @@ const TipsRoute = () => (
   <View style={[styles.scene, { backgroundColor: '#303ab7' }]} />
 );
 
-export default class TabViewExample extends React.Component {
+export default class App extends React.Component {
   state = {
     index: 0,
     routes: [
@@ -21,7 +25,7 @@ export default class TabViewExample extends React.Component {
       { key: 'tips', title: 'Tips' },
     ],
   };
- 
+
   render() {
     return (
       <TabView
@@ -46,3 +50,5 @@ const styles = StyleSheet.create({
     flex: 1,
   },
 });
+
+AppRegistry.registerComponent('App', () => App);
