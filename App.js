@@ -36,6 +36,7 @@ export default class TabViewExample extends React.Component {
           width: Dimensions.get('window').width,
           height: Dimensions.get('window').width,
         }}
+        tabBarPosition={'bottom'}
       />
     );
   }
