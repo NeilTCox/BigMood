@@ -7,6 +7,7 @@ export default class SignIn extends Component {
     this.state = {
       email: "gfg",
       password: "hi",
+      reenteredPassword: "",
       hidePassword: true, 
     };
   }
@@ -16,7 +17,7 @@ export default class SignIn extends Component {
       <View style={styles.view}>
 
         <Text style={styles.title}>
-          Sign In
+          Sign Up
         </Text>
 
         <TextInput
@@ -39,9 +40,23 @@ export default class SignIn extends Component {
           </TouchableOpacity>
         </View>
 
+        <View style = {styles.inputBtnHolder}>
+          <TextInput
+            style={styles.input}
+            secureTextEntry={this.state.hidePassword}
+            placeholder="re-enter password"
+            onChangeText={(password) => this.setState({reenteredPassword})}
+          /> 
+          <TouchableOpacity activeOpacity = { 0.8 } 
+            style = { styles.visibilityBtn } 
+            onPress = { this._managePasswordVisibility }>
+            <Image source = { ( this.state.hidePassword ) ? require('../assets/hide.png') : require('../assets/view.png') } style = { styles.btnImage } />
+          </TouchableOpacity>
+        </View>
+
         <Button
-          onPress={this._authenticate.bind(this)}
-          title="Log In"
+          onPress={this._createAccount.bind(this)}
+          title="create account"
           color="grey"
         />
 
@@ -49,9 +64,15 @@ export default class SignIn extends Component {
     );
   }
   
-  _authenticate() {
-    console.log("in authenticate")
+  _createAccount() {
+    console.log("in createAccount")
     console.log(this.state.email)
+
+    if( this.state.password != this.state.reenteredPassword ) {
+        Alert.alert('Error creating account', 'Passwords do not match', [],{cancelable: true})
+        return;
+    }
+
     fetch('https://8d6400b3.ngrok.io/users/login', {
       method: 'POST',
       headers: {
@@ -68,7 +89,7 @@ export default class SignIn extends Component {
       if( res.ok ) {
         
       } else {
-        Alert.alert('Sign in error', 'Username or password incorrect', [],{cancelable: true},)
+        Alert.alert('Error creating account', 'Username or password incorrect', [],{cancelable: true})
       }
     });
   }
@@ -128,4 +149,4 @@ const styles = StyleSheet.create({
   }
 });
 
-AppRegistry.registerComponent('SignIn', () => SignIn);
+AppRegistry.registerComponent('SignUp', () => SignUp);
