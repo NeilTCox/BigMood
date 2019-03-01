@@ -10,7 +10,7 @@ import SuggestionCenter from './components/SuggestionCenter';
 
 const TodayRoute = () => (
   <View style={[styles.scene, { backgroundColor: '#ff4081' }]}>
-    <DailyLog />
+    <SignIn />
   </View>
 );
 const HistoryRoute = () => (
