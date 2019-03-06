@@ -3,21 +3,23 @@ function isEmpty(obj) {
 }
 
 export function callApi(url, method, body={}, params={}) {
-  let apiUrl = url
+  method = method.toUpperCase();
+  let apiUrl = url;
   if (!isEmpty(params)) {
     let getParams = []
     Object.keys(params).forEach(key => getParams.push(String(key)+'='+String(params[key])));
     apiUrl = apiUrl + '?' + params.join('&');
     console.log(url);
-    body = {};
   }
-  console.log(apiUrl);
-  return fetch(apiUrl, {
+  fetchObject = {
     method,
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify(body),
-  });
+  }
+  if (method === 'GET' || method === 'HEAD') {
+    fetchObject.body = JSON.stringify(body);
+  }
+  return fetch(apiUrl, fetchObject);
 }
