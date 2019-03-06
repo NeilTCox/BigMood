@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Alert, AppRegistry, Button, Image, Text, TouchableOpacity, StyleSheet, TextInput, View } from 'react-native';
+const config = require('../config');
 
 export default class SignIn extends Component {
   constructor(props) {
@@ -73,7 +74,7 @@ export default class SignIn extends Component {
         return;
     }
 
-    fetch('https://8d6400b3.ngrok.io/users/login', {
+    fetch(`${config.endpoint}/users/login`, {
       method: 'POST',
       headers: {
         Accept: 'application/json',

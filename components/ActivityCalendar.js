@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { AppRegistry, StyleSheet, Text, View, Dimensions} from 'react-native';
 import { Calendar, CalendarList, Agenda } from 'react-native-calendars';
+import { callApi } from '../libs/apihelper.js';
+const config = require('../config');
 
 const happy = '#B3DEA9'
 const ok = '#EE9B67'
@@ -13,7 +15,8 @@ export default class ActivityCalendar extends Component {
 
   calendarHighlights(){
     // retrieve calendar highlights from server
-    //body = callApi('', 'GET')
+    body = callApi(`${config.endpoint}/days`, 'GET')
+    // console.log(body)
     // dummy data
     calendarHighlights = {
       '2019-02-15': {startingDay: true, color: happy},

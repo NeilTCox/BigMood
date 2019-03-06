@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Alert, AppRegistry, Button, Image, Text, TouchableOpacity, StyleSheet, TextInput, View } from 'react-native';
 import { callApi } from '../libs/apihelper.js';
+const config = require('../config');
 
 export default class SignIn extends Component {
   constructor(props) {
@@ -55,7 +56,7 @@ export default class SignIn extends Component {
     console.log(this.state.email)
 
     console.log(callApi);
-    callApi('http://e881386f.ngrok.io/users/login',
+    callApi(`${config.endpoint}/users/login`,
       method='POST',
       body={
         email: this.state.email,
@@ -68,7 +69,10 @@ export default class SignIn extends Component {
         } else {
           Alert.alert('Sign in error', 'Username or password incorrect', [],{cancelable: true},)
         }
-      });
+      })
+      .catch(
+       (err) => {console.log(err)}
+      );
   }
 
   _managePasswordVisibility = () =>
