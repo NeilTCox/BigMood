@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
 import { Alert, AppRegistry, Button, Image, Text, TouchableOpacity, StyleSheet, TextInput, View } from 'react-native';
-import { callApi } from '../libs/apihelper.js';
 
 export default class SignIn extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      email: "gfgx",
+      email: "gfg",
       password: "hi",
-      hidePassword: true,
+      reenteredPassword: "",
+      hidePassword: true, 
     };
   }
 
@@ -17,7 +17,7 @@ export default class SignIn extends Component {
       <View style={styles.view}>
 
         <Text style={styles.title}>
-          Sign In
+          Sign Up
         </Text>
 
         <TextInput
@@ -32,45 +32,68 @@ export default class SignIn extends Component {
             secureTextEntry={this.state.hidePassword}
             placeholder="password"
             onChangeText={(password) => this.setState({password})}
-          />
-          <TouchableOpacity activeOpacity = { 0.8 }
-            style = { styles.visibilityBtn }
+          /> 
+          <TouchableOpacity activeOpacity = { 0.8 } 
+            style = { styles.visibilityBtn } 
+            onPress = { this._managePasswordVisibility }>
+            <Image source = { ( this.state.hidePassword ) ? require('../assets/hide.png') : require('../assets/view.png') } style = { styles.btnImage } />
+          </TouchableOpacity>
+        </View>
+
+        <View style = {styles.inputBtnHolder}>
+          <TextInput
+            style={styles.input}
+            secureTextEntry={this.state.hidePassword}
+            placeholder="re-enter password"
+            onChangeText={(password) => this.setState({reenteredPassword})}
+          /> 
+          <TouchableOpacity activeOpacity = { 0.8 } 
+            style = { styles.visibilityBtn } 
             onPress = { this._managePasswordVisibility }>
             <Image source = { ( this.state.hidePassword ) ? require('../assets/hide.png') : require('../assets/view.png') } style = { styles.btnImage } />
           </TouchableOpacity>
         </View>
 
         <Button
-          onPress={this._authenticate.bind(this)}
-          title="Log In"
+          onPress={this._createAccount.bind(this)}
+          title="create account"
           color="grey"
         />
 
       </View>
     );
   }
-
-  _authenticate() {
-    console.log("in authenticate")
+  
+  _createAccount() {
+    console.log("in createAccount")
     console.log(this.state.email)
 
-    console.log(callApi);
-    callApi('http://e881386f.ngrok.io/users/login',
-      method='POST',
-      body={
+    if( this.state.password != this.state.reenteredPassword ) {
+        Alert.alert('Error creating account', 'Passwords do not match', [],{cancelable: true})
+        return;
+    }
+
+    fetch('https://8d6400b3.ngrok.io/users/login', {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
         email: this.state.email,
         password: this.state.password,
+      })
     })
     // .then((res) => console.log(res));
-      .then((res) => {
-        if( res.ok ) {
-          Alert.alert('Sign in success', 'Yes, Daddy!', [],{cancelable: true},)
-        } else {
-          Alert.alert('Sign in error', 'Username or password incorrect', [],{cancelable: true},)
-        }
-      });
+    .then((res) => {
+      if( res.ok ) {
+        
+      } else {
+        Alert.alert('Error creating account', 'Username or password incorrect', [],{cancelable: true})
+      }
+    });
   }
-
+  
   _managePasswordVisibility = () =>
   {
     this.setState({ hidePassword: !this.state.hidePassword });
@@ -82,10 +105,12 @@ const styles = StyleSheet.create({
     padding: 10,
     flex: 1,
     flexDirection: 'column',
+    fontFamily: 'sans-serif-thin',
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'center', 
   },
   title: {
+    fontFamily: 'sans-serif-thin',
     fontSize: 30,
     fontWeight: 'bold',
   },
@@ -99,7 +124,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     paddingVertical: 0,
     borderColor: 'grey',
-    borderRadius: 5
+    borderRadius: 5 
   },
   inputBtnHolder:
   {
@@ -124,4 +149,4 @@ const styles = StyleSheet.create({
   }
 });
 
-AppRegistry.registerComponent('SignIn', () => SignIn);
+AppRegistry.registerComponent('SignUp', () => SignUp);

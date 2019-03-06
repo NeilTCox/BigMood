@@ -4,13 +4,15 @@ import { TabView, TabBar, SceneMap } from 'react-native-tab-view';
 
 import NewUser from './components/NewUser';
 import SignIn from './components/SignIn';
+import SignUp from './components/SignUp';
 import DailyLog from './components/DailyLog';
 import ActivityCalendar from './components/ActivityCalendar';
 import SuggestionCenter from './components/SuggestionCenter';
 
+
 const TodayRoute = () => (
   <View style={[styles.scene, { backgroundColor: '#ff4081' }]}>
-    <DailyLog />
+    <SignIn />
   </View>
 );
 const HistoryRoute = () => (
