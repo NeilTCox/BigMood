@@ -18,7 +18,7 @@ export function callApi(url, method, body={}, params={}) {
       'Content-Type': 'application/json',
     },
   }
-  if (method === 'GET' || method === 'HEAD') {
+  if (method !== 'GET' && method !== 'HEAD') {
     fetchObject.body = JSON.stringify(body);
   }
   return fetch(apiUrl, fetchObject);
