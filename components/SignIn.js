@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Alert, AppRegistry, Button, Image, Text, TouchableOpacity, StyleSheet, TextInput, View } from 'react-native';
 import { callApi } from '../libs/apihelper.js';
-const config = require('../config');
 
 export default class SignIn extends Component {
   constructor(props) {

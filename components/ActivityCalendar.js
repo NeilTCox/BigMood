@@ -15,8 +15,12 @@ export default class ActivityCalendar extends Component {
 
   calendarHighlights(){
     // retrieve calendar highlights from server
-    body = callApi(`/days`, 'GET')
-    // console.log(body)
+    console.log(config.email)
+    callApi(`/days`, 'GET', {}, {email: config.email})
+    .then((res) => {
+      console.log(res)
+    })
+
     // dummy data
     calendarHighlights = {
       '2019-02-15': {startingDay: true, color: happy},

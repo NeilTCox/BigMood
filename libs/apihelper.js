@@ -9,11 +9,16 @@ export function callApi(extension, method, body={}, params={}) {
   extension = extension.charAt(0) === '/' ? extension : `/${extension}`;
   let apiUrl = `${config.endpoint}${extension}`;
   console.log(apiUrl);
+  console.log('asdfasdsd');
+  console.log(params.email);
+  console.log(body);
   if (!isEmpty(params)) {
     let getParams = []
     Object.keys(params).forEach(key => getParams.push(String(key)+'='+String(params[key])));
-    apiUrl = apiUrl + '?' + params.join('&');
-    console.log(url);
+    apiUrl = apiUrl + '?' + getParams.join('&');
+    console.log('paramsdfmadsfmadfmadfa')
+    console.log(getParams);
+    console.log(apiUrl);
   }
   fetchObject = {
     method,
