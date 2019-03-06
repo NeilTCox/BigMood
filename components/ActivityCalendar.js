@@ -15,7 +15,7 @@ export default class ActivityCalendar extends Component {
 
   calendarHighlights(){
     // retrieve calendar highlights from server
-    body = callApi(`${config.endpoint}/days`, 'GET')
+    body = callApi(`/days`, 'GET')
     // console.log(body)
     // dummy data
     calendarHighlights = {

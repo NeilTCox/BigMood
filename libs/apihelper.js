@@ -1,10 +1,14 @@
+const config = require('../config');
+
 function isEmpty(obj) {
   return Object.entries(obj).length === 0 && obj.constructor === Object;
 }
 
-export function callApi(url, method, body={}, params={}) {
+export function callApi(extension, method, body={}, params={}) {
   method = method.toUpperCase();
-  let apiUrl = url;
+  extension = extension.charAt(0) === '/' ? extension : `/${extension}`;
+  let apiUrl = `${config.endpoint}${extension}`;
+  console.log(apiUrl);
   if (!isEmpty(params)) {
     let getParams = []
     Object.keys(params).forEach(key => getParams.push(String(key)+'='+String(params[key])));

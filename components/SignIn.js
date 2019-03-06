@@ -52,11 +52,7 @@ export default class SignIn extends Component {
   }
 
   _authenticate() {
-    console.log("in authenticate")
-    console.log(this.state.email)
-
-    console.log(callApi);
-    callApi(`${config.endpoint}/users/login`,
+    callApi("/users/login",
       method='POST',
       body={
         email: this.state.email,
