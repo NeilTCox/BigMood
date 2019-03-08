@@ -11,7 +11,7 @@ export function callApi(extension, method, body={}, params={}) {
   if (!isEmpty(params)) {
     let getParams = []
     Object.keys(params).forEach(key => getParams.push(String(key)+'='+String(params[key])));
-    apiUrl = apiUrl + '?' + params.join('&');
+    apiUrl = apiUrl + '?' + getParams.join('&');
   }
   fetchObject = {
     method,
