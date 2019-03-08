@@ -11,6 +11,7 @@ export default class SuggestionCenter extends Component {
 
   componentDidMount() {
     this._getData().then((res) => {
+      console.log(res.events)
       this.setState({ events: res.events });
     });
   }
@@ -20,6 +21,7 @@ export default class SuggestionCenter extends Component {
       <View style={styles.container}>
         <FlatList
           data={this.state.events}
+          keyExtractor={(item, index) => item._id}
           renderItem={({item}) => <Text style={styles.item}>{item.name}</Text>}
         />
       </View>
@@ -27,7 +29,7 @@ export default class SuggestionCenter extends Component {
   }
 
   _getData() {
-    return callApi('/events', 'GET', 
+    return callApi('/events', 'GET',
       {}, {
         email: "test@test.com",
       })
