@@ -124,4 +124,4 @@ const styles = StyleSheet.create({
   }
 });
 
-AppRegistry.registerComponent('SignIn', () => SignIn);
+//AppRegistry.registerComponent('SignIn', () => SignIn);

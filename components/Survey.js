@@ -1,30 +1,3 @@
-/*
-Sample App.js that uses react-navigation to flip between the survey and the survey results screen:
-
-import {
-    createStackNavigator,
-    createAppContainer
-} from 'react-navigation';
-import SurveyCompleted from './assets/components/SurveyCompleted';
-import Survey from './assets/components/Survey';
-
-const stackNav = createStackNavigator({
-    // Add sign-in component here as well
-    Survey: {
-        screen: Survey
-    },
-    SurveyCompleted: {
-        screen: SurveyCompleted // would have to change this into the tab view
-    }
-});
-
-const AppContainer = createAppContainer(stackNav);
-
-export default AppContainer;
-
-
-*/
-
 import React, { Component } from 'react';
 import { StyleSheet, Button, Text, TextInput, View } from 'react-native';
 import { SimpleSurvey } from 'react-native-simple-survey';

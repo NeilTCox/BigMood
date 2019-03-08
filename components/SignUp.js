@@ -150,4 +150,4 @@ const styles = StyleSheet.create({
   }
 });
 
-AppRegistry.registerComponent('SignUp', () => SignUp);
+//AppRegistry.registerComponent('SignUp', () => SignUp);
