@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Alert, AppRegistry, Button, Image, Text, TouchableOpacity, StyleSheet, TextInput, View } from 'react-native';
-import { callApi } from '../libs/apihelper';
+import { getFitData } from '../libs/apihelper';
 const config = require('../config');
 
 export default class SignIn extends Component {
@@ -10,7 +10,7 @@ export default class SignIn extends Component {
       email: "gfg",
       password: "hi",
       reenteredPassword: "",
-      hidePassword: true, 
+      hidePassword: true,
       first: "",
       last: ""
     };
@@ -48,9 +48,9 @@ export default class SignIn extends Component {
             secureTextEntry={this.state.hidePassword}
             placeholder="password"
             onChangeText={(password) => this.setState({password})}
-          /> 
-          <TouchableOpacity activeOpacity = { 0.8 } 
-            style = { styles.visibilityBtn } 
+          />
+          <TouchableOpacity activeOpacity = { 0.8 }
+            style = { styles.visibilityBtn }
             onPress = { this._managePasswordVisibility }>
             <Image source = { ( this.state.hidePassword ) ? require('../assets/hide.png') : require('../assets/view.png') } style = { styles.btnImage } />
           </TouchableOpacity>
@@ -62,16 +62,17 @@ export default class SignIn extends Component {
             secureTextEntry={this.state.hidePassword}
             placeholder="re-enter password"
             onChangeText={(reenteredPassword) => this.setState({reenteredPassword})}
-          /> 
-          <TouchableOpacity activeOpacity = { 0.8 } 
-            style = { styles.visibilityBtn } 
+          />
+          <TouchableOpacity activeOpacity = { 0.8 }
+            style = { styles.visibilityBtn }
             onPress = { this._managePasswordVisibility }>
             <Image source = { ( this.state.hidePassword ) ? require('../assets/hide.png') : require('../assets/view.png') } style = { styles.btnImage } />
           </TouchableOpacity>
         </View>
 
         <Button
-          onPress={this._createAccount.bind(this)}
+          // onPress={this._createAccount.bind(this)}
+          onPress={this._testFit.bind(this)}
           title="create account"
           color="grey"
         />
@@ -79,10 +80,15 @@ export default class SignIn extends Component {
       </View>
     );
   }
-  
+
+  _testFit() {
+    console.log('what');
+    return getFitData().then((res) => console.log(res))
+  }
+
   _createAccount() {
     console.log("in createAccount")
-    console.log(this.state.email) 
+    console.log(this.state.email)
 
     if( this.state.password != this.state.reenteredPassword ) {
         Alert.alert('Error creating account', 'Passwords do not match', [],{cancelable: true})
@@ -105,7 +111,7 @@ export default class SignIn extends Component {
       }
     })
   }
-  
+
   _managePasswordVisibility = () =>
   {
     this.setState({ hidePassword: !this.state.hidePassword });
@@ -116,9 +122,9 @@ const styles = StyleSheet.create({
   view: {
     padding: 10,
     flex: 1,
-    flexDirection: 'column', 
+    flexDirection: 'column',
     alignItems: 'center',
-    justifyContent: 'center', 
+    justifyContent: 'center',
   },
   title: {
     fontSize: 30,
@@ -134,7 +140,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     paddingVertical: 0,
     borderColor: 'grey',
-    borderRadius: 5 
+    borderRadius: 5
   },
   inputBtnHolder:
   {
