@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Alert, AppRegistry, Button, Image, Text, TouchableOpacity, StyleSheet, TextInput, View } from 'react-native';
+import { callApi } from '../libs/apihelper';
 const config = require('../config');
 
 export default class SignIn extends Component {
@@ -10,6 +11,8 @@ export default class SignIn extends Component {
       password: "hi",
       reenteredPassword: "",
       hidePassword: true, 
+      first: "",
+      last: ""
     };
   }
 
@@ -25,6 +28,18 @@ export default class SignIn extends Component {
           style={styles.input}
           placeholder="email"
           onChangeText={(email) => this.setState({ email })}
+        />
+
+        <TextInput
+          style={styles.input}
+          placeholder="first name"
+          onChangeText={(first) => this.setState({ first })}
+        />
+
+        <TextInput
+          style={styles.input}
+          placeholder="last name"
+          onChangeText={(last) => this.setState({ last })}
         />
 
         <View style = {styles.inputBtnHolder}>
@@ -46,7 +61,7 @@ export default class SignIn extends Component {
             style={styles.input}
             secureTextEntry={this.state.hidePassword}
             placeholder="re-enter password"
-            onChangeText={(password) => this.setState({reenteredPassword})}
+            onChangeText={(reenteredPassword) => this.setState({reenteredPassword})}
           /> 
           <TouchableOpacity activeOpacity = { 0.8 } 
             style = { styles.visibilityBtn } 
@@ -67,32 +82,28 @@ export default class SignIn extends Component {
   
   _createAccount() {
     console.log("in createAccount")
-    console.log(this.state.email)
+    console.log(this.state.email) 
 
     if( this.state.password != this.state.reenteredPassword ) {
         Alert.alert('Error creating account', 'Passwords do not match', [],{cancelable: true})
         return;
     }
 
-    fetch(`${config.endpoint}/users/login`, {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
+    callApi('/users/create', 'POST',
+     body={
         email: this.state.email,
         password: this.state.password,
+        firstName: this.state.first,
+        lastName: this.state.last
       })
-    })
-    // .then((res) => console.log(res));
-    .then((res) => {
-      if( res.ok ) {
-        
+    .then( (res) => {
+      console.log(res)
+      if(res.email) {
+        console.log('res is ok')
       } else {
-        Alert.alert('Error creating account', 'Username or password incorrect', [],{cancelable: true})
+        Alert.alert('Error creating account', 'SOME ISSUE', [],{cancelable: true})
       }
-    });
+    })
   }
   
   _managePasswordVisibility = () =>
@@ -105,13 +116,11 @@ const styles = StyleSheet.create({
   view: {
     padding: 10,
     flex: 1,
-    flexDirection: 'column',
-    fontFamily: 'sans-serif-thin',
+    flexDirection: 'column', 
     alignItems: 'center',
     justifyContent: 'center', 
   },
   title: {
-    fontFamily: 'sans-serif-thin',
     fontSize: 30,
     fontWeight: 'bold',
   },
