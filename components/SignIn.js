@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Alert, AppRegistry, Button, Image, Text, TouchableOpacity, StyleSheet, TextInput, View } from 'react-native';
-import { callApi } from '../libs/apihelper.js';
+import { callApi, callFitApi } from '../libs/apihelper.js';
+const config = require('../config');
 
 export default class SignIn extends Component {
   constructor(props) {
@@ -57,9 +58,15 @@ export default class SignIn extends Component {
         email: this.state.email,
         password: this.state.password,
     })
+    // callFitApi("/users/me/dataSources",
+    //   method='POST',
+    //   body={
+    //     email: this.state.email,
+    //     password: this.state.password,
+    // })
     // .then((res) => console.log(res));
       .then((res) => {
-        if( res.ok ) {
+        if(res.email) {
           Alert.alert('Sign in success', 'Yes, Daddy!', [],{cancelable: true},)
         } else {
           Alert.alert('Sign in error', 'Username or password incorrect', [],{cancelable: true},)
