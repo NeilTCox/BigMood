@@ -19,7 +19,7 @@ export default class ActivityCalendar extends Component {
     callApi(`/days`, 'GET', {}, {email: config.email})
     .then((res) => {
       console.log(res)
-    })
+    });
 
     // dummy data
     calendarHighlights = {
