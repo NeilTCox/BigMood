@@ -8,12 +8,10 @@ export function callApi(extension, method, body={}, params={}) {
   method = method.toUpperCase();
   extension = extension.charAt(0) === '/' ? extension : `/${extension}`;
   let apiUrl = `${config.endpoint}${extension}`;
-  console.log(apiUrl);
   if (!isEmpty(params)) {
     let getParams = []
     Object.keys(params).forEach(key => getParams.push(String(key)+'='+String(params[key])));
-    apiUrl = apiUrl + '?' + params.join('&');
-    console.log(url);
+    apiUrl = apiUrl + '?' + getParams.join('&');
   }
   fetchObject = {
     method,
@@ -25,5 +23,38 @@ export function callApi(extension, method, body={}, params={}) {
   if (method !== 'GET' && method !== 'HEAD') {
     fetchObject.body = JSON.stringify(body);
   }
-  return fetch(apiUrl, fetchObject);
+  return fetch(apiUrl, fetchObject)
+    .then(function(res) {
+      return res.json().then(function(data) {
+        return data;
+      });
+    });
+}
+
+export function callFitApi(extension, method, body={}, params={}) {
+  method = method.toUpperCase();
+  extension = extension.charAt(0) === '/' ? extension : `/${extension}`;
+  let apiUrl = `${config.fitEndpoint}${extension}`;
+  if (!isEmpty(params)) {
+    let getParams = []
+    Object.keys(params).forEach(key => getParams.push(String(key)+'='+String(params[key])));
+    apiUrl = apiUrl + '?' + params.join('&');
+  }
+  fetchObject = {
+    method,
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ${config.apikey}',
+    },
+  }
+  if (method !== 'GET' && method !== 'HEAD') {
+    fetchObject.body = JSON.stringify(body);
+  }
+  return fetch(apiUrl, fetchObject)
+    .then(function(res) {
+      return res.json().then(function(data) {
+        return data;
+      });
+    });
 }
