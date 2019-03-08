@@ -52,29 +52,30 @@ export default class SignIn extends Component {
   }
 
   _authenticate() {
-    callApi("/users/login",
-      method='POST',
-      body={
-        email: this.state.email,
-        password: this.state.password,
-    })
-    // callFitApi("/users/me/dataSources",
+    // callApi("/users/login",
     //   method='POST',
     //   body={
     //     email: this.state.email,
     //     password: this.state.password,
     // })
-    // .then((res) => console.log(res));
-      .then((res) => {
-        if(res.email) {
-          Alert.alert('Sign in success', 'Yes, Daddy!', [],{cancelable: true},)
-        } else {
-          Alert.alert('Sign in error', 'Username or password incorrect', [],{cancelable: true},)
-        }
-      })
-      .catch(
-       (err) => {console.log(err)}
-      );
+    // .then((res) => {
+    //   if(res.email) {
+    //     Alert.alert('Sign in success', 'Yes, Daddy!', [],{cancelable: true},)
+    //   } else {
+    //     Alert.alert('Sign in error', 'Username or password incorrect', [],{cancelable: true},)
+    //   }
+    // })
+
+    callFitApi("/users/me/dataSources",
+      method='POST',
+      body={
+        email: this.state.email,
+        password: this.state.password,
+    })
+    .then((res) => console.log(res))
+    .catch(
+      (err) => {console.log(err)}
+    );
   }
 
   _managePasswordVisibility = () =>

@@ -43,9 +43,9 @@ export function callFitApi(extension, method, body={}, params={}) {
   fetchObject = {
     method,
     headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-      'Authorization': 'Bearer ${config.apikey}',
+      Accept: 'application/json;encoding=utf-8',
+      'Content-Type': 'application/json;encoding=utf-8',
+      'Authorization': `Bearer ${config.apikey}`,
     },
   }
   if (method !== 'GET' && method !== 'HEAD') {
