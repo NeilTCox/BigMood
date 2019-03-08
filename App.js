@@ -16,7 +16,7 @@ const TodayRoute = () => (
   </View>
 );
 const HistoryRoute = () => (
-  <View style={[styles.scene, { backgroundColor: '#673ab7' }]}>
+  <View style={[styles.scene]}>
     <ActivityCalendar />
   </View>
 );

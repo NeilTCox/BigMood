@@ -64,7 +64,6 @@ export default class ActivityCalendar extends Component {
 
         calendarHighlights[days[i].date.slice(0, 10)] = {color, startingDay, endingDay}
       }
-      console.log(calendarHighlights)
       this.setState({calendarHighlights : calendarHighlights});
     });
     // dummy data
@@ -77,16 +76,41 @@ export default class ActivityCalendar extends Component {
     //   '2019-02-20': {endingDay: true, color: sad,},
   }
 
+  displayDate(day){
+    console.log("day selected:", day)
+    callApi('/days/log', 'GET', {}, {email: config.email, date: day.dateString})
+    .then(function(res){
+      year = day.year;
+      month = day.month;
+      date = day.day;
+      mood = res.mood;
+      events = res.events;
+      sleep = res.log.info.sleep;
+      steps = res.log.info.steps;
+
+
+      console.log(year);
+      console.log(month);
+      console.log(date);
+      console.log(mood);
+      console.log(sleep);
+      console.log(steps);
+    });
+  }
+
   render() {
     return (
       <View>
-        <CalendarList
+        <CalendarList style={styles.calendarlist}
           // Enable horizontal scrolling, default = false
           horizontal={true}
           // Enable paging on horizontal, default = false
           pagingEnabled={true}
           // Set custom calendarWidth.
           calendarWidth={Dimensions.get('window').width}
+          // Handler which gets executed on day press. Default = undefined
+          onDayPress={(day) => this.displayDate(day)}
+
 
           markedDates = {
             this.state.calendarHighlights
@@ -94,6 +118,28 @@ export default class ActivityCalendar extends Component {
 
           markingType = {'period'}
         />
+        <View>
+          <Text>
+            Day:{"\n"}
+            1309u309u9u
+          </Text>
+          <Text>
+            Mood:{"\n"}
+            happy boi
+          </Text>
+          <Text>
+            Activity list:{"\n"}
+            running, class, party
+          </Text>
+          <Text>
+            Sleep Amount:{"\n"}
+            7 Hours
+          </Text>
+          <Text>
+            Step Count:{"\n"}
+            10000 steps!
+          </Text>
+        </View>
       </View>
     );
   }
@@ -103,8 +149,9 @@ const styles = StyleSheet.create({
   scene: {
     flex: 1,
   },
+  calendarlist: {
+    marginTop: 22,
+  },
 });
-
-
 
 AppRegistry.registerComponent('ActivityCalendar', () => ActivityCalendar);
