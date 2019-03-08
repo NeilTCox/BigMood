@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Alert, AppRegistry, Button, Image, Text, TouchableOpacity, StyleSheet, TextInput, View } from 'react-native';
+import { Alert, Button, Image, Text, TouchableOpacity, StyleSheet, TextInput, View } from 'react-native';
 const config = require('../config');
 
 export default class SignIn extends Component {
@@ -8,7 +8,7 @@ export default class SignIn extends Component {
     this.state = {
       email: "gfg",
       password: "hi",
-      reenteredPassword: "",
+      reenteredPassword: "hi",
       hidePassword: true, 
     };
   }
@@ -46,7 +46,7 @@ export default class SignIn extends Component {
             style={styles.input}
             secureTextEntry={this.state.hidePassword}
             placeholder="re-enter password"
-            onChangeText={(password) => this.setState({reenteredPassword})}
+            onChangeText={(reenteredPassword) => this.setState({reenteredPassword})}
           /> 
           <TouchableOpacity activeOpacity = { 0.8 } 
             style = { styles.visibilityBtn } 
@@ -74,7 +74,7 @@ export default class SignIn extends Component {
         return;
     }
 
-    fetch(`${config.endpoint}/users/login`, {
+    fetch(`${config.endpoint}/users/create`, {
       method: 'POST',
       headers: {
         Accept: 'application/json',
@@ -87,10 +87,14 @@ export default class SignIn extends Component {
     })
     // .then((res) => console.log(res));
     .then((res) => {
+      //console.log(res)
       if( res.ok ) {
-        
+        const tempUserDetails = {}
+        tempUserDetails.email = this.state.email
+        tempUserDetails.password = this.state.password
+        this.props.navigation.navigate('Survey', {userDetails: tempUserDetails});
       } else {
-        Alert.alert('Error creating account', 'Username or password incorrect', [],{cancelable: true})
+        Alert.alert('Error creating account', 'Bad response from server', [],{cancelable: true})
       }
     });
   }

@@ -3,7 +3,12 @@ import { StyleSheet, Button, Text, TextInput, View } from 'react-native';
 import { SimpleSurvey } from 'react-native-simple-survey';
 
 const GREEN = 'rgba(141,196,63,1)';
-const PURPLE = 'rgba(108,48,237,1)';
+const WHITE = 'rgba(255,255,255,1)';
+const BLACK = 'rgba(0,0,0,1)';
+const defaultUserDetails = {
+    email: 'ok@default.com',
+    password: 'hi'
+}
 
 const survey = [
     {
@@ -59,13 +64,14 @@ export default class SurveyScreen extends Component {
             headerTitle: 'BigMood',
             headerTitleStyle: {
                 flex: 1,
-            }
+            },
+            headerLeft: null,   // remove back button
         };
     }
 
     constructor(props) {
         super(props);
-        this.state = { backgroundColor: PURPLE };
+        this.state = { backgroundColor: WHITE };
     }
 
     onSurveyFinished(answers) {
@@ -109,8 +115,10 @@ export default class SurveyScreen extends Component {
             answersAsObj.events[i] = answersAsObj.events[i].trim()
         }
 
-        // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        this.props.navigation.navigate('SurveyCompleted', { surveyAnswers: answersAsObj });
+        // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        // Send answersAsObj to server here!
+
+        this.props.navigation.navigate('Tabs');
     }
 
     /*
@@ -175,7 +183,7 @@ export default class SurveyScreen extends Component {
                 <Button
                     title={data.optionText}
                     onPress={onPress}
-                    color={isSelected ? GREEN : PURPLE}
+                    color={isSelected ? GREEN : BLACK}
                     key={`button_${index}`}
                 />
             </View>
@@ -230,9 +238,11 @@ export default class SurveyScreen extends Component {
     }
 
     render() {
+        const user = this.props.navigation.getParam('userDetails', defaultUserDetails);
         return (
             <View style={[styles.background, { backgroundColor: this.state.backgroundColor }]}>
                 <View style={styles.container}>
+                    {/*<Text>{user.email}</Text>*/}
                     <SimpleSurvey
                         survey={survey}
                         renderSelector={this.renderButton.bind(this)}

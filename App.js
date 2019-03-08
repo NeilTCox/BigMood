@@ -8,8 +8,8 @@ import Survey from './components/Survey';
 import Tabs from './components/Tabs';
 
 const stackNav = createStackNavigator({
-    SignIn: {
-        screen: SignIn
+    SignUp: {
+        screen: SignUp
     },
     Survey: {
         screen: Survey

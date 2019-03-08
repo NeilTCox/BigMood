@@ -8,7 +8,6 @@ import DailyLog from './DailyLog';
 import ActivityCalendar from './ActivityCalendar';
 import SuggestionCenter from './SuggestionCenter';
 
-
 const TodayRoute = () => (
   <View style={[styles.scene, { backgroundColor: '#ff4081' }]}>
     <SignIn />
@@ -33,6 +32,13 @@ export default class App extends React.Component {
       { key: 'history', title: 'History' },
       { key: 'tips', title: 'Tips' },
     ],
+  };
+
+  static navigationOptions = () => {
+    return {
+      headerTitle: 'BigMood',
+      headerLeft: null,   // remove back button
+    }
   };
 
   render() {
