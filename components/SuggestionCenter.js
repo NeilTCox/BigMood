@@ -11,7 +11,7 @@ export default class SuggestionCenter extends Component {
 
   componentDidMount() {
     this._getData().then((res) => {
-      console.log(res.events)
+      // console.log(res.events)
       this.setState({ events: res.events });
     });
   }

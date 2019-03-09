@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { AppRegistry, StyleSheet, Text, View, Dimensions} from 'react-native';
+import { AppRegistry, StyleSheet, Text, View, Dimensions, FlatList } from 'react-native';
 import { Calendar, CalendarList, Agenda } from 'react-native-calendars';
 import { callApi } from '../libs/apihelper.js';
 const config = require('../config');
@@ -11,7 +11,14 @@ const sad = '#F7CF6D'
 export default class ActivityCalendar extends Component {
   constructor(props){
     super(props)
-    this.state = {calendarHighlights : {}}
+    this.state = {
+      calendarHighlights : {},
+      date: '',
+      mood: '',
+      events: [],
+      sleep: '',
+      steps: '',
+    }
   }
   componentDidMount(){
     this.calendarHighlights()
@@ -23,8 +30,6 @@ export default class ActivityCalendar extends Component {
     .then((res) => {
       calendarHighlights = {}
       days = res.days
-
-      console.log(days)
       
       for(i = 0; i < days.length; i++){
         color = ''
@@ -77,24 +82,25 @@ export default class ActivityCalendar extends Component {
   }
 
   displayDate(day){
-    console.log("day selected:", day)
     callApi('/days/log', 'GET', {}, {email: config.email, date: day.dateString})
-    .then(function(res){
-      year = day.year;
-      month = day.month;
-      date = day.day;
+    .then((res) => {
+      console.log(res)
+      console.log(res.events)
+      date = `${day.month}/${day.day}/${day.year}`;
       mood = res.mood;
       events = res.events;
       sleep = res.log.info.sleep;
       steps = res.log.info.steps;
 
-
-      console.log(year);
-      console.log(month);
       console.log(date);
       console.log(mood);
       console.log(sleep);
       console.log(steps);
+      for(var event of events){
+        console.log(event);
+      }
+
+      this.setState({date, mood, events, sleep, steps});
     });
   }
 
@@ -121,23 +127,24 @@ export default class ActivityCalendar extends Component {
         <View>
           <Text>
             Day:{"\n"}
-            1309u309u9u
+            {this.state.date}
           </Text>
           <Text>
             Mood:{"\n"}
-            happy boi
+            {this.state.mood}
           </Text>
-          <Text>
-            Activity list:{"\n"}
-            running, class, party
-          </Text>
+          <FlatList
+            data = {this.state.events}
+            keyExtractor={(item, index) => item._id}
+            renderItem = {({item}) => <Text>Activity list:{"\n"}{item.name}</Text>}
+          />
           <Text>
             Sleep Amount:{"\n"}
-            7 Hours
+            {this.state.sleep}
           </Text>
           <Text>
             Step Count:{"\n"}
-            10000 steps!
+            {this.state.steps}
           </Text>
         </View>
       </View>
