@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Alert, AppRegistry, Button, Image, Text, TouchableOpacity, StyleSheet, TextInput, View } from 'react-native';
+import { getFitData } from '../libs/apihelper';
 const config = require('../config');
 
 export default class SignIn extends Component {
@@ -9,7 +10,9 @@ export default class SignIn extends Component {
       email: "gfg",
       password: "hi",
       reenteredPassword: "",
-      hidePassword: true, 
+      hidePassword: true,
+      first: "",
+      last: ""
     };
   }
 
@@ -27,15 +30,27 @@ export default class SignIn extends Component {
           onChangeText={(email) => this.setState({ email })}
         />
 
+        <TextInput
+          style={styles.input}
+          placeholder="first name"
+          onChangeText={(first) => this.setState({ first })}
+        />
+
+        <TextInput
+          style={styles.input}
+          placeholder="last name"
+          onChangeText={(last) => this.setState({ last })}
+        />
+
         <View style = {styles.inputBtnHolder}>
           <TextInput
             style={styles.input}
             secureTextEntry={this.state.hidePassword}
             placeholder="password"
             onChangeText={(password) => this.setState({password})}
-          /> 
-          <TouchableOpacity activeOpacity = { 0.8 } 
-            style = { styles.visibilityBtn } 
+          />
+          <TouchableOpacity activeOpacity = { 0.8 }
+            style = { styles.visibilityBtn }
             onPress = { this._managePasswordVisibility }>
             <Image source = { ( this.state.hidePassword ) ? require('../assets/hide.png') : require('../assets/view.png') } style = { styles.btnImage } />
           </TouchableOpacity>
@@ -46,17 +61,18 @@ export default class SignIn extends Component {
             style={styles.input}
             secureTextEntry={this.state.hidePassword}
             placeholder="re-enter password"
-            onChangeText={(password) => this.setState({reenteredPassword})}
-          /> 
-          <TouchableOpacity activeOpacity = { 0.8 } 
-            style = { styles.visibilityBtn } 
+            onChangeText={(reenteredPassword) => this.setState({reenteredPassword})}
+          />
+          <TouchableOpacity activeOpacity = { 0.8 }
+            style = { styles.visibilityBtn }
             onPress = { this._managePasswordVisibility }>
             <Image source = { ( this.state.hidePassword ) ? require('../assets/hide.png') : require('../assets/view.png') } style = { styles.btnImage } />
           </TouchableOpacity>
         </View>
 
         <Button
-          onPress={this._createAccount.bind(this)}
+          // onPress={this._createAccount.bind(this)}
+          onPress={this._testFit.bind(this)}
           title="create account"
           color="grey"
         />
@@ -64,7 +80,12 @@ export default class SignIn extends Component {
       </View>
     );
   }
-  
+
+  _testFit() {
+    console.log('what');
+    return getFitData().then((res) => console.log(res))
+  }
+
   _createAccount() {
     console.log("in createAccount")
     console.log(this.state.email)
@@ -74,27 +95,23 @@ export default class SignIn extends Component {
         return;
     }
 
-    fetch(`${config.endpoint}/users/login`, {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
+    callApi('/users/create', 'POST',
+     body={
         email: this.state.email,
         password: this.state.password,
+        firstName: this.state.first,
+        lastName: this.state.last
       })
-    })
-    // .then((res) => console.log(res));
-    .then((res) => {
-      if( res.ok ) {
-        
+    .then( (res) => {
+      console.log(res)
+      if(res.email) {
+        console.log('res is ok')
       } else {
-        Alert.alert('Error creating account', 'Username or password incorrect', [],{cancelable: true})
+        Alert.alert('Error creating account', 'SOME ISSUE', [],{cancelable: true})
       }
-    });
+    })
   }
-  
+
   _managePasswordVisibility = () =>
   {
     this.setState({ hidePassword: !this.state.hidePassword });
@@ -106,12 +123,10 @@ const styles = StyleSheet.create({
     padding: 10,
     flex: 1,
     flexDirection: 'column',
-    fontFamily: 'sans-serif-thin',
     alignItems: 'center',
-    justifyContent: 'center', 
+    justifyContent: 'center',
   },
   title: {
-    fontFamily: 'sans-serif-thin',
     fontSize: 30,
     fontWeight: 'bold',
   },
@@ -125,7 +140,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     paddingVertical: 0,
     borderColor: 'grey',
-    borderRadius: 5 
+    borderRadius: 5
   },
   inputBtnHolder:
   {

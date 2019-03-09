@@ -4,16 +4,24 @@ import { callApi } from '../libs/apihelper.js';
 
 
 export default class SuggestionCenter extends Component {
+  constructor(props) {
+    super(props)
+    this.state = { events: [] }
+  }
+
+  componentDidMount() {
+    this._getData().then((res) => {
+      console.log(res.events)
+      this.setState({ events: res.events });
+    });
+  }
+
   render() {
     return (
       <View style={styles.container}>
         <FlatList
-          // data={[
-          //   {key: 'You should go for a run.'},
-          //   {key: 'You should eat some food.'},
-          //   {key: 'You should go hug a cat.'},
-          // ]}
-          data={this._getData()}
+          data={this.state.events}
+          keyExtractor={(item, index) => item._id}
           renderItem={({item}) => <Text style={styles.item}>{item.name}</Text>}
         />
       </View>
@@ -21,10 +29,10 @@ export default class SuggestionCenter extends Component {
   }
 
   _getData() {
-    return callApi( 'http://1da417a0.ngrok.io/URL/events', 'POST', 
-      {
+    return callApi('/events', 'GET',
+      {}, {
         email: "test@test.com",
-      }, {}).events
+      })
   }
 }
 

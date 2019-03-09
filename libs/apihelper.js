@@ -43,8 +43,8 @@ export function callFitApi(extension, method, body={}, params={}) {
   fetchObject = {
     method,
     headers: {
-      Accept: 'application/json;encoding=utf-8',
-      'Content-Type': 'application/json;encoding=utf-8',
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
       'Authorization': `Bearer ${config.apikey}`,
     },
   }
@@ -57,4 +57,16 @@ export function callFitApi(extension, method, body={}, params={}) {
         return data;
       });
     });
+}
+
+export function getFitData() {
+  return callFitApi('/users/me/dataset:aggregate', 'POST', {
+    "aggregateBy": [{
+      "dataTypeName": "com.google.step_count.delta",
+      "dataSourceId": "derived:com.google.step_count.delta:com.google.android.gms:estimated_steps"
+    }],
+    "bucketByTime": { "durationMillis": 86400000 },
+    "startTimeMillis": 1438705622000,
+    "endTimeMillis": 1439310422000
+  }, {});
 }
