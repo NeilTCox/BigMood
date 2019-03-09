@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
-import { TouchableNativeFeedback, Platform, StyleSheet, Text, View} from 'react-native';
+import { TouchableHighlight, StyleSheet, Text, View} from 'react-native';
 
 // Pivot page:
-//
 //      New user -> Sign Up -> Survey -> Tabs
 // Existing user -> Sign In -> Tabs
 
@@ -26,22 +25,18 @@ export default class LandingPage extends Component {
       <View style={styles.view}>
         <Text style={styles.title}>BigMood</Text>
         
-        <TouchableNativeFeedback
-            onPress={this._NewUser.bind(this)}
-            background={Platform.OS === 'android' ? TouchableNativeFeedback.SelectableBackground() : ''}>
+        <TouchableHighlight onPress={this._NewUser.bind(this)} underlayColor="white">
           <View style={styles.button}>
             <Text style={styles.buttonText}>New User</Text>
           </View>
-        </TouchableNativeFeedback>
+        </TouchableHighlight>
 
-        <TouchableNativeFeedback
-            onPress={this._ExistingUser.bind(this)}
-            background={Platform.OS === 'android' ? TouchableNativeFeedback.SelectableBackground() : ''}>
+        <TouchableHighlight onPress={this._ExistingUser.bind(this)} underlayColor="white">
           <View style={styles.button}>
             <Text style={styles.buttonText}>Existing User</Text>
           </View>
-        </TouchableNativeFeedback>
-        
+        </TouchableHighlight>
+
       </View>
     );
   }
