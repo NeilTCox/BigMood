@@ -3958,6 +3958,20 @@ react-native-screens@1.0.0-alpha.22, "react-native-screens@^1.0.0 || ^1.0.0-alph
   version "1.0.0-alpha.22"
   resolved "https://registry.yarnpkg.com/react-native-screens/-/react-native-screens-1.0.0-alpha.22.tgz#7a120377b52aa9bbb94d0b8541a014026be9289b"
 
+react-native-selection-group@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/react-native-selection-group/-/react-native-selection-group-1.0.0.tgz#0eb201bc5c7a92aea379d09723a71a7b6c3fbdc8"
+  integrity sha512-jMLMEAoGuEPh3D1xIlkXqphfbPIyvldYVFAilfVgsxlftJMmf4DQ5Db1FydylF+fYqqHrv+hvqNCOYhMfiMMkg==
+  dependencies:
+    prop-types "^15.6.1"
+
+react-native-simple-survey@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/react-native-simple-survey/-/react-native-simple-survey-1.1.0.tgz#beafe493a39a44899c21dfdb8e40e1a8d1bb8c9a"
+  integrity sha512-S95F1+eOQWm81ic8Gxrvq6EJqwRoUG7ofz4IaJAXjcRa1GSgkKc2HJ6u37HA6fIlnyD6RkVDqwVNScC2/crkKw==
+  dependencies:
+    react-native-selection-group "^1.0.0"
+
 react-native-svg@8.0.10:
   version "8.0.10"
   resolved "https://registry.yarnpkg.com/react-native-svg/-/react-native-svg-8.0.10.tgz#b07e2342d1486220f5fda1a584e316e7d2d1f392"
