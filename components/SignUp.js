@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Alert, AppRegistry, Image, Text, TouchableOpacity, TouchableHighlight, StyleSheet, TextInput, View } from 'react-native';
+import { Alert, Image, Text, TouchableOpacity, TouchableHighlight, StyleSheet, TextInput, View } from 'react-native';
 import { getFitData } from '../libs/apihelper';
 const config = require('../config');
 
@@ -176,5 +176,3 @@ const styles = StyleSheet.create({
     color: 'white'
   }
 });
-
-AppRegistry.registerComponent('SignUp', () => SignUp);
