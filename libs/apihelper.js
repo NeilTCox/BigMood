@@ -38,7 +38,7 @@ export function callFitApi(extension, method, body={}, params={}) {
   if (!isEmpty(params)) {
     let getParams = []
     Object.keys(params).forEach(key => getParams.push(String(key)+'='+String(params[key])));
-    apiUrl = apiUrl + '?' + params.join('&');
+    apiUrl = apiUrl + '?' + getParams.join('&');
   }
   fetchObject = {
     method,
@@ -59,14 +59,56 @@ export function callFitApi(extension, method, body={}, params={}) {
     });
 }
 
-export function getFitData() {
+export function getDailySteps(date) {
+  const startTime = date.getTime();
   return callFitApi('/users/me/dataset:aggregate', 'POST', {
     "aggregateBy": [{
       "dataTypeName": "com.google.step_count.delta",
       "dataSourceId": "derived:com.google.step_count.delta:com.google.android.gms:estimated_steps"
     }],
     "bucketByTime": { "durationMillis": 86400000 },
-    "startTimeMillis": 1438705622000,
-    "endTimeMillis": 1439310422000
-  }, {});
+    "startTimeMillis": startTime,
+    "endTimeMillis": startTime + 86400000
+  }, {})
+  .then((data) => {
+    return {
+      stepCount: data.bucket[0].dataset[0].point[0].value[0].intVal,
+      date: new Date(parseInt(data.bucket[0].startTimeMillis))
+    }
+  });
 }
+
+// export function getDailySleep(date) {
+//   const startTime = date.getTime();
+//   return callFitApi('/users/me/sessions', 'GET', {}, {})
+//   .then((data) => {
+//     console.log(data);
+//     // return {
+//     //   stepCount: data.bucket[0].dataset[0].point[0].value[0].intVal,
+//     //   date: new Date(parseInt(data.bucket[0].startTimeMillis))
+//     // }
+//   });
+// }
+
+export function sendPastWeekStepData() {
+  let current = new Date(currentDate());
+  for (let i = 1; i <= 7; ++i) {
+    current.setDate(current.getDate()-1)
+    getDailySteps(current)
+    .then((data) => {
+      callApi('/health/create', 'POST', {
+        date: data.date,
+        info: {
+          steps: data.stepCount,
+          sleep: 8
+        },
+        email: config.email
+      }, {})
+    });
+  }
+}
+
+function currentDate() {
+  return new Date(new Date().toJSON().slice(0,10).replace(/-/g,'/'));
+}
+

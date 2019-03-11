@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Alert, AppRegistry, Button, Image, Text, TouchableOpacity, StyleSheet, TextInput, View } from 'react-native';
-import { getFitData } from '../libs/apihelper';
+import { getDailySleep } from '../libs/apihelper';
 const config = require('../config');
 
 export default class SignIn extends Component {
@@ -71,8 +71,8 @@ export default class SignIn extends Component {
         </View>
 
         <Button
-          // onPress={this._createAccount.bind(this)}
-          onPress={this._testFit.bind(this)}
+          onPress={this._createAccount.bind(this)}
+          // onPress={this._testFit.bind(this)}
           title="create account"
           color="grey"
         />
@@ -82,8 +82,7 @@ export default class SignIn extends Component {
   }
 
   _testFit() {
-    console.log('what');
-    return getFitData().then((res) => console.log(res))
+    return getDailySleep(new Date('03/10/2019'));
   }
 
   _createAccount() {
