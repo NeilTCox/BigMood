@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-import { Alert, AppRegistry, Button, Image, Text, TouchableOpacity, StyleSheet, TextInput, View } from 'react-native';
-import { callApi, callFitApi } from '../libs/apihelper.js';
-const config = require('../config');
+import { Alert, AppRegistry, Image, Text, TouchableOpacity, TouchableHighlight, StyleSheet, TextInput, View } from 'react-native';
+import { callApi } from '../libs/apihelper.js';
 
 export default class SignIn extends Component {
   constructor(props) {
@@ -41,11 +40,11 @@ export default class SignIn extends Component {
           </TouchableOpacity>
         </View>
 
-        <Button
-          onPress={this._authenticate.bind(this)}
-          title="Log In"
-          color="grey"
-        />
+        <TouchableHighlight onPress={this._authenticate.bind(this)} underlayColor="white">
+          <View style={styles.button}>
+            <Text style={styles.buttonText}>LOG IN</Text>
+          </View>
+        </TouchableHighlight>
 
       </View>
     );
@@ -58,23 +57,16 @@ export default class SignIn extends Component {
         email: this.state.email,
         password: this.state.password,
     })
-    // callFitApi("/users/me/dataSources",
-    //   method='POST',
-    //   body={
-    //     email: this.state.email,
-    //     password: this.state.password,
-    // })
-    // .then((res) => console.log(res));
-      .then((res) => {
-        if(res.email) {
-          Alert.alert('Sign in success', 'Yes, Daddy!', [],{cancelable: true},)
-        } else {
-          Alert.alert('Sign in error', 'Username or password incorrect', [],{cancelable: true},)
-        }
-      })
-      .catch(
-       (err) => {console.log(err)}
-      );
+    .then((res) => {
+      if(res.email) {
+        Alert.alert('Sign in success', 'Yes, Daddy!', [],{cancelable: true},)
+      } else {
+        Alert.alert('Sign in error', 'Username or password incorrect', [],{cancelable: true},)
+      }
+    })
+    .catch(
+      (err) => {console.log(err)}
+    );
   }
 
   _managePasswordVisibility = () =>
@@ -94,6 +86,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 30,
     fontWeight: 'bold',
+    marginBottom: 30,
   },
   input: {
     fontSize: 18,
@@ -105,7 +98,8 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     paddingVertical: 0,
     borderColor: 'grey',
-    borderRadius: 5
+    borderRadius: 5,
+    marginBottom: 15
   },
   inputBtnHolder:
   {
@@ -117,6 +111,7 @@ const styles = StyleSheet.create({
   visibilityBtn:
   {
     position: 'absolute',
+    top: 3,
     right: 3,
     height: 40,
     width: 35,
@@ -127,6 +122,16 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
     height: '100%',
     width: '100%'
+  },
+  button: {
+    marginTop: 20,
+    width: 260,
+    alignItems: 'center',
+    backgroundColor: 'grey'
+  },
+  buttonText: {
+    padding: 20,
+    color: 'white'
   }
 });
 

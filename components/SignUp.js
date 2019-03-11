@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-import { Alert, AppRegistry, Button, Image, Text, TouchableOpacity, StyleSheet, TextInput, View } from 'react-native';
+import { Alert, AppRegistry, Button, Image, Text, TouchableOpacity, StyleSheet, TextInput, View, TouchableHighlight } from 'react-native';
 import { getDailySleep } from '../libs/apihelper';
-const config = require('../config');
 
 export default class SignIn extends Component {
   constructor(props) {
@@ -70,12 +69,11 @@ export default class SignIn extends Component {
           </TouchableOpacity>
         </View>
 
-        <Button
-          onPress={this._createAccount.bind(this)}
-          // onPress={this._testFit.bind(this)}
-          title="create account"
-          color="grey"
-        />
+        <TouchableHighlight onPress={this._createAccount.bind(this)} underlayColor="white">
+          <View style={styles.button}>
+            <Text style={styles.buttonText}>CREATE ACCOUNT</Text>
+          </View>
+        </TouchableHighlight>
 
       </View>
     );
@@ -128,6 +126,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 30,
     fontWeight: 'bold',
+    marginBottom: 30,
   },
   input: {
     fontSize: 18,
@@ -139,7 +138,8 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     paddingVertical: 0,
     borderColor: 'grey',
-    borderRadius: 5
+    borderRadius: 5,
+    marginBottom: 15,
   },
   inputBtnHolder:
   {
@@ -152,6 +152,7 @@ const styles = StyleSheet.create({
   {
     position: 'absolute',
     right: 3,
+    top: 3,
     height: 40,
     width: 35,
     padding: 5
@@ -161,6 +162,16 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
     height: '100%',
     width: '100%'
+  },
+  button: {
+    marginTop: 20,
+    width: 260,
+    alignItems: 'center',
+    backgroundColor: 'grey'
+  },
+  buttonText: {
+    padding: 20,
+    color: 'white'
   }
 });
 
