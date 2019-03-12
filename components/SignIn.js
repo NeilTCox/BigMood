@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-import { Alert, Image, Text, TouchableOpacity, TouchableHighlight, StyleSheet, TextInput, View } from 'react-native';
-import { callApi, callFitApi } from '../libs/apihelper.js';
-const config = require('../config');
+import { Alert, AppRegistry, Image, Text, TouchableOpacity, TouchableHighlight, StyleSheet, TextInput, View } from 'react-native';
+import { callApi } from '../libs/apihelper.js';
 
 export default class SignIn extends Component {
   constructor(props) {
@@ -52,27 +51,19 @@ export default class SignIn extends Component {
   }
 
   _authenticate() {
-    // callApi("/users/login",
-    //   method='POST',
-    //   body={
-    //     email: this.state.email,
-    //     password: this.state.password,
-    // })
-    // .then((res) => {
-    //   if(res.email) {
-    //     Alert.alert('Sign in success', 'Yes, Daddy!', [],{cancelable: true},)
-    //   } else {
-    //     Alert.alert('Sign in error', 'Username or password incorrect', [],{cancelable: true},)
-    //   }
-    // })
-
-    callFitApi("/users/me/dataSources",
+    callApi("/users/login",
       method='POST',
       body={
         email: this.state.email,
         password: this.state.password,
     })
-    .then((res) => console.log(res))
+    .then((res) => {
+      if(res.email) {
+        Alert.alert('Sign in success', 'Yes, Daddy!', [],{cancelable: true},)
+      } else {
+        Alert.alert('Sign in error', 'Username or password incorrect', [],{cancelable: true},)
+      }
+    })
     .catch(
       (err) => {console.log(err)}
     );

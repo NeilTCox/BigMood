@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-import { Alert, Image, Text, TouchableOpacity, TouchableHighlight, StyleSheet, TextInput, View } from 'react-native';
-import { getFitData } from '../libs/apihelper';
-const config = require('../config');
+import { Alert, AppRegistry, Button, Image, Text, TouchableOpacity, StyleSheet, TextInput, View, TouchableHighlight } from 'react-native';
+import { getDailySleep } from '../libs/apihelper';
 
 export default class SignIn extends Component {
   constructor(props) {
@@ -70,7 +69,7 @@ export default class SignIn extends Component {
           </TouchableOpacity>
         </View>
 
-        <TouchableHighlight onPress={this._testFit.bind(this)} underlayColor="white">
+        <TouchableHighlight onPress={this._createAccount.bind(this)} underlayColor="white">
           <View style={styles.button}>
             <Text style={styles.buttonText}>CREATE ACCOUNT</Text>
           </View>
@@ -81,8 +80,7 @@ export default class SignIn extends Component {
   }
 
   _testFit() {
-    console.log('what');
-    return getFitData().then((res) => console.log(res))
+    return getDailySleep(new Date('03/10/2019'));
   }
 
   _createAccount() {
