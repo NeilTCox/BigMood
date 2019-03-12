@@ -2,9 +2,6 @@ import React, { Component } from 'react';
 import { StyleSheet, Button, Text, TextInput, View } from 'react-native';
 import { SimpleSurvey } from 'react-native-simple-survey';
 
-const GREEN = 'rgba(141,196,63,1)';
-const WHITE = 'rgba(255,255,255,1)';
-const BLACK = 'rgba(0,0,0,1)';
 const defaultUserDetails = {
     email: 'ok@default.com',
     password: 'hi'
@@ -55,12 +52,6 @@ const survey = [
 export default class SurveyScreen extends Component {
     static navigationOptions = () => {
         return {
-            headerStyle: {
-                backgroundColor: GREEN,
-                height: 40,
-                elevation: 5,
-            },
-            headerTintColor: '#fff',
             headerTitle: 'BigMood',
             headerTitleStyle: {
                 flex: 1,
@@ -71,7 +62,7 @@ export default class SurveyScreen extends Component {
 
     constructor(props) {
         super(props);
-        this.state = { backgroundColor: WHITE };
+        this.state = { backgroundColor: 'white' };
     }
 
     onSurveyFinished(answers) {
@@ -137,10 +128,10 @@ export default class SurveyScreen extends Component {
         return (
             <View style={{ flexGrow: 1, maxWidth: 100, marginTop: 10, marginBottom: 10 }}>
                 <Button
-                    color={GREEN}
+                    color={'grey'}
                     onPress={onPress}
                     disabled={!enabled}
-                    backgroundColor={GREEN}
+                    backgroundColor={'grey'}
                     title={'Previous'}
                 />
             </View>
@@ -151,10 +142,10 @@ export default class SurveyScreen extends Component {
         return (
             <View style={{ flexGrow: 1, maxWidth: 100, marginTop: 10, marginBottom: 10 }}>
                 <Button
-                    color={GREEN}
+                    color={'grey'}
                     onPress={onPress}
                     disabled={!enabled}
-                    backgroundColor={GREEN}
+                    backgroundColor={'grey'}
                     title={'Next'}
                 />
             </View>
@@ -168,7 +159,7 @@ export default class SurveyScreen extends Component {
                     title={'Finish'}
                     onPress={onPress}
                     disabled={!enabled}
-                    color={GREEN}
+                    color={'grey'}
                 />
             </View>
         );
@@ -183,7 +174,7 @@ export default class SurveyScreen extends Component {
                 <Button
                     title={data.optionText}
                     onPress={onPress}
-                    color={isSelected ? GREEN : BLACK}
+                    color={isSelected ? 'grey' : 'black'}
                     key={`button_${index}`}
                 />
             </View>
@@ -242,7 +233,7 @@ export default class SurveyScreen extends Component {
         return (
             <View style={[styles.background, { backgroundColor: this.state.backgroundColor }]}>
                 <View style={styles.container}>
-                    {/*<Text>{user.email}</Text>*/}
+                    {/* <Text>{user.email}</Text> */}
                     <SimpleSurvey
                         survey={survey}
                         renderSelector={this.renderButton.bind(this)}
@@ -314,7 +305,7 @@ const styles = StyleSheet.create({
     navigationButton: {
         
         minHeight: 40,
-        backgroundColor: GREEN,
+        backgroundColor: 'grey',
         padding: 0,
         borderRadius: 100,
         marginTop: 5,

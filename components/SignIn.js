@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Alert, AppRegistry, Image, Text, TouchableOpacity, TouchableHighlight, StyleSheet, TextInput, View } from 'react-native';
+import { Alert, Image, Text, TouchableOpacity, TouchableHighlight, StyleSheet, TextInput, View } from 'react-native';
 import { callApi } from '../libs/apihelper.js';
 
 export default class SignIn extends Component {
@@ -59,7 +59,8 @@ export default class SignIn extends Component {
     })
     .then((res) => {
       if(res.email) {
-        Alert.alert('Sign in success', 'Yes, Daddy!', [],{cancelable: true},)
+        //Alert.alert('Sign in success', 'Yes, Daddy!', [],{cancelable: true},)
+        this.props.navigation.navigate('Tabs')  // might need to supply the user object here later
       } else {
         Alert.alert('Sign in error', 'Username or password incorrect', [],{cancelable: true},)
       }

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { Alert, AppRegistry, Button, Image, Text, TouchableOpacity, StyleSheet, TextInput, View, TouchableHighlight } from 'react-native';
-import { getDailySleep } from '../libs/apihelper';
+import { Alert, Image, Text, TouchableOpacity, StyleSheet, TextInput, View, TouchableHighlight } from 'react-native';
+import { callApi, getDailySleep } from '../libs/apihelper';
 
 export default class SignIn extends Component {
   constructor(props) {
@@ -103,6 +103,11 @@ export default class SignIn extends Component {
       console.log(res)
       if(res.email) {
         console.log('res is ok')
+        const tempUserDetails = {
+          email: body.email,
+          password: body.password
+        }
+        this.props.navigation.navigate('Survey', {userDetails: tempUserDetails});
       } else {
         Alert.alert('Error creating account', 'SOME ISSUE', [],{cancelable: true})
       }

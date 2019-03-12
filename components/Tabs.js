@@ -1,16 +1,14 @@
 import React from 'react';
-import { AppRegistry, StyleSheet, Text, View , Dimensions} from 'react-native';
+import { StyleSheet, Text, View , Dimensions} from 'react-native';
 import { TabView, TabBar, SceneMap } from 'react-native-tab-view';
 
-import SignIn from './SignIn';
-import SignUp from './SignUp';
 import DailyLog from './DailyLog';
 import ActivityCalendar from './ActivityCalendar';
 import SuggestionCenter from './SuggestionCenter';
 
 const TodayRoute = () => (
   <View style={[styles.scene, { backgroundColor: '#ff4081' }]}>
-    <SignIn />
+    <DailyLog />
   </View>
 );
 const HistoryRoute = () => (
@@ -66,5 +64,3 @@ const styles = StyleSheet.create({
     flex: 1,
   },
 });
-
-//AppRegistry.registerComponent('App', () => App);
