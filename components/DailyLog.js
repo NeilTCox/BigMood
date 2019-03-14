@@ -74,7 +74,7 @@ export default class DailyLog extends Component {
           }}> 
           <View style={styles.modalBackground}>
 
-            <View style={styles.window}>
+            <View style={styles.window}> 
 
               <Text style={styles.subtitleText}>Event Name</Text>
               <TextInput

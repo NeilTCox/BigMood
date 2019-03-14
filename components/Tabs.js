@@ -7,17 +7,17 @@ import ActivityCalendar from './ActivityCalendar';
 import SuggestionCenter from './SuggestionCenter';
 
 const TodayRoute = () => (
-  <View style={[styles.scene, { backgroundColor: '#ff4081' }]}>
+  <View style={[styles.scene, { backgroundColor: 'white' }]}>
     <DailyLog />
   </View>
 );
 const HistoryRoute = () => (
-  <View style={[styles.scene, { backgroundColor: '#673ab7' }]}>
+  <View style={[styles.scene, { backgroundColor: 'white' }]}>
     <ActivityCalendar />
   </View>
 );
 const TipsRoute = () => (
-  <View style={[styles.scene, { backgroundColor: '#303ab7' }]}>
+  <View style={[styles.scene, { backgroundColor: 'white' }]}>
     <SuggestionCenter />
   </View>
 );
