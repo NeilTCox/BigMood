@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-import { AppRegistry, FlatList, StyleSheet, Text, View} from 'react-native';
+import { TouchableHighlight, FlatList, StyleSheet, Text, View} from 'react-native';
 import { callApi } from '../libs/apihelper.js';
-
 
 export default class SuggestionCenter extends Component {
   constructor(props) {
@@ -9,7 +8,7 @@ export default class SuggestionCenter extends Component {
     this.state = { events: [] }
   }
 
-  componentDidMount() {
+  giveSuggestion() {
     this._getData().then((res) => {
       console.log(res.events)
       this.setState({ events: res.events });
@@ -19,6 +18,14 @@ export default class SuggestionCenter extends Component {
   render() {
     return (
       <View style={styles.container}>
+        <TouchableHighlight style={styles.button}
+          underlayColor="white"
+          onPress={() => {
+            this.giveSuggestion();
+          }}>
+          <Text style={styles.buttonText}>Give me suggestions!</Text>
+        </TouchableHighlight>
+
         <FlatList
           data={this.state.events}
           keyExtractor={(item, index) => item._id}
@@ -31,7 +38,7 @@ export default class SuggestionCenter extends Component {
   _getData() {
     return callApi('/events', 'GET',
       {}, {
-        email: "test@test.com",
+        email: "t@t.com",
       })
   }
 }
@@ -49,6 +56,14 @@ const styles = StyleSheet.create({
      fontSize: 18,
      height: 44,
    },
+   button: {
+    marginTop: 20,
+    width: 260,
+    alignItems: 'center',
+    backgroundColor: 'grey'
+  },
+  buttonText: {
+    padding: 20,
+    color: 'white'
+  },
 });
-
-AppRegistry.registerComponent('SuggestionCenter', () => SuggestionCenter);
