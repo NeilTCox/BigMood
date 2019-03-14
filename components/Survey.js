@@ -1,36 +1,11 @@
-/*
-Sample App.js that uses react-navigation to flip between the survey and the survey results screen:
-
-import {
-    createStackNavigator,
-    createAppContainer
-} from 'react-navigation';
-import SurveyCompleted from './assets/components/SurveyCompleted';
-import Survey from './assets/components/Survey';
-
-const stackNav = createStackNavigator({
-    // Add sign-in component here as well
-    Survey: {
-        screen: Survey
-    },
-    SurveyCompleted: {
-        screen: SurveyCompleted // would have to change this into the tab view
-    }
-});
-
-const AppContainer = createAppContainer(stackNav);
-
-export default AppContainer;
-
-
-*/
-
 import React, { Component } from 'react';
 import { StyleSheet, Button, Text, TextInput, View } from 'react-native';
 import { SimpleSurvey } from 'react-native-simple-survey';
 
-const GREEN = 'rgba(141,196,63,1)';
-const PURPLE = 'rgba(108,48,237,1)';
+const defaultUserDetails = {
+    email: 'ok@default.com',
+    password: 'hi'
+}
 
 const survey = [
     {
@@ -77,22 +52,17 @@ const survey = [
 export default class SurveyScreen extends Component {
     static navigationOptions = () => {
         return {
-            headerStyle: {
-                backgroundColor: GREEN,
-                height: 40,
-                elevation: 5,
-            },
-            headerTintColor: '#fff',
             headerTitle: 'BigMood',
             headerTitleStyle: {
                 flex: 1,
-            }
+            },
+            headerLeft: null,   // remove back button
         };
     }
 
     constructor(props) {
         super(props);
-        this.state = { backgroundColor: PURPLE };
+        this.state = { backgroundColor: 'white' };
     }
 
     onSurveyFinished(answers) {
@@ -136,8 +106,10 @@ export default class SurveyScreen extends Component {
             answersAsObj.events[i] = answersAsObj.events[i].trim()
         }
 
-        // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        this.props.navigation.navigate('SurveyCompleted', { surveyAnswers: answersAsObj });
+        // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        // Send answersAsObj to server here!
+
+        this.props.navigation.navigate('Tabs');
     }
 
     /*
@@ -156,10 +128,10 @@ export default class SurveyScreen extends Component {
         return (
             <View style={{ flexGrow: 1, maxWidth: 100, marginTop: 10, marginBottom: 10 }}>
                 <Button
-                    color={GREEN}
+                    color={'grey'}
                     onPress={onPress}
                     disabled={!enabled}
-                    backgroundColor={GREEN}
+                    backgroundColor={'grey'}
                     title={'Previous'}
                 />
             </View>
@@ -170,10 +142,10 @@ export default class SurveyScreen extends Component {
         return (
             <View style={{ flexGrow: 1, maxWidth: 100, marginTop: 10, marginBottom: 10 }}>
                 <Button
-                    color={GREEN}
+                    color={'grey'}
                     onPress={onPress}
                     disabled={!enabled}
-                    backgroundColor={GREEN}
+                    backgroundColor={'grey'}
                     title={'Next'}
                 />
             </View>
@@ -187,7 +159,7 @@ export default class SurveyScreen extends Component {
                     title={'Finish'}
                     onPress={onPress}
                     disabled={!enabled}
-                    color={GREEN}
+                    color={'grey'}
                 />
             </View>
         );
@@ -202,7 +174,7 @@ export default class SurveyScreen extends Component {
                 <Button
                     title={data.optionText}
                     onPress={onPress}
-                    color={isSelected ? GREEN : PURPLE}
+                    color={isSelected ? 'grey' : 'black'}
                     key={`button_${index}`}
                 />
             </View>
@@ -257,9 +229,11 @@ export default class SurveyScreen extends Component {
     }
 
     render() {
+        const user = this.props.navigation.getParam('userDetails', defaultUserDetails);
         return (
             <View style={[styles.background, { backgroundColor: this.state.backgroundColor }]}>
                 <View style={styles.container}>
+                    {/* <Text>{user.email}</Text> */}
                     <SimpleSurvey
                         survey={survey}
                         renderSelector={this.renderButton.bind(this)}
@@ -331,7 +305,7 @@ const styles = StyleSheet.create({
     navigationButton: {
         
         minHeight: 40,
-        backgroundColor: GREEN,
+        backgroundColor: 'grey',
         padding: 0,
         borderRadius: 100,
         marginTop: 5,
