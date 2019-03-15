@@ -36,7 +36,7 @@ export default class SuggestionCenter extends Component {
   }
 
   _getData() {
-    return callApi('/events', 'GET',
+    return callApi('/events/suggestions', 'GET',
       {}, {
         email: "t@t.com",
       })
