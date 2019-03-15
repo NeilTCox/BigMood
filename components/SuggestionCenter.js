@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { TouchableHighlight, FlatList, StyleSheet, Text, View} from 'react-native';
-import { callApi } from '../libs/apihelper.js';
+import { callApi, getTodayHealth } from '../libs/apihelper.js';
 
 export default class SuggestionCenter extends Component {
   constructor(props) {
@@ -10,8 +10,8 @@ export default class SuggestionCenter extends Component {
 
   giveSuggestion() {
     this._getData().then((res) => {
-      console.log(res.events)
-      this.setState({ events: res.events });
+      console.log(res)
+      this.setState({ events: res.eventSuggestions.concat(res.activitySuggestions) });
     });
   }
 
@@ -36,10 +36,13 @@ export default class SuggestionCenter extends Component {
   }
 
   _getData() {
-    return callApi('/events/suggestions', 'GET',
-      {}, {
-        email: "t@t.com",
-      })
+    return getTodayHealth().then((info) => {
+      return callApi('/events/help', 'POST',
+        {
+          email: "t@t.com",
+          info
+        }, {})
+    })
   }
 }
 
