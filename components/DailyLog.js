@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Alert, AppRegistry, Button, FlatList, Icon, Image, ListItem, Modal, StyleSheet, TextInput, Text, TouchableHighlight, View} from 'react-native';
-import { callApi, callFitApi } from '../libs/apihelper';
+import { callApi, getTodayHealth } from '../libs/apihelper';
 const config = require('../config');
 
 export default class DailyLog extends Component {
@@ -9,7 +9,7 @@ export default class DailyLog extends Component {
     this.state = {
       mood: '',
       // sleep: -1,
-      events: [], 
+      events: [],
       dayColor: {
         happyColor: 'powderblue',
         neutralColor: 'powderblue',
@@ -51,30 +51,30 @@ export default class DailyLog extends Component {
             color = { this.state.dayColor.sadColor }
             onPress={this.daySad.bind(this)}
             title=":("
-          /> 
+          />
         </View>
 
         <Text style={styles.subtitleText}>What did you do today?</Text>
-        <FlatList 
+        <FlatList
           data={this.state.events}
-          renderItem={ ({item}) => 
+          renderItem={ ({item}) =>
             <View style={styles.eventView} >
               <Text style={styles.eventNameText}>{item.name}</Text>
               <Text>{item.mood}</Text>
-            </View> 
+            </View>
           }
-          
-        /> 
-        <Modal 
+
+        />
+        <Modal
           animationType="fade"
-          transparent={true} 
+          transparent={true}
           visible={this.state.modalVisible}
           onRequestClose={() => {
             console.log('Modal has been closed.');
-          }}> 
+          }}>
           <View style={styles.modalBackground}>
 
-            <View style={styles.window}> 
+            <View style={styles.window}>
 
               <Text style={styles.subtitleText}>Event Name</Text>
               <TextInput
@@ -98,9 +98,9 @@ export default class DailyLog extends Component {
                   color = { this.state.eventColor.sadColor }
                   onPress={this.eventSad.bind(this)}
                   title=":("
-                /> 
+                />
               </View>
-            
+
               <View style={styles.modalButtonContainer}>
                 <TouchableHighlight style={styles.smallButton}
                   onPress={() => {
@@ -119,19 +119,19 @@ export default class DailyLog extends Component {
 
             </View>
           </View>
-        </Modal> 
+        </Modal>
 
-        <TouchableHighlight style={styles.button} 
+        <TouchableHighlight style={styles.button}
           onPress={() => {
             this.setModalVisible(true);
           }}>
           <Text style={styles.buttonText}>NEW EVENT</Text>
         </TouchableHighlight>
-        
 
-        
+
+
         {/* <Text style={styles.subtitleText}>How many hours did you sleep?</Text>
-        <TextInput 
+        <TextInput
           style={styles.input}
           keyboardType='numeric'
           onChangeText={ (sleep) => this.setState({ sleep: parseFloat(sleep) }) }
@@ -140,7 +140,7 @@ export default class DailyLog extends Component {
         <Button
           style={styles.submitButton}
           onPress={this.submitLog.bind(this)}
-          title="Submit" 
+          title="Submit"
         />
 
       </View>
@@ -158,40 +158,57 @@ export default class DailyLog extends Component {
     //   Alert.alert('Invalid Sleep Hours', 'Please enter a sleep amount between 0 and 24 hours.', [],{cancelable: true});
     //   return;
     // }
-  
-    callApi('/days/create', 'POST',  
-      body={
-        email: config.email,
-        mood: this.state.mood, 
-        info: {
-          step: 4000,
-          sleep: 7
-        },
-        date: this.makeDateString() // figure out how to get this thing
-      }).then( (res) => {
-        console.log('got response')
-        console.log(res);
+    let today = new Date();
+    let dd = today.getDate();
+    let mm = today.getMonth() + 1; //January is 0!
+    let yyyy = today.getFullYear();
 
-        for ( let i = 0; i < this.state.events.length; i++ ) {
-          console.log("event adding " + i);
-          console.log(this.state.events[i])
+    if (dd < 10) {
+      dd = '0' + dd;
+    }
 
-          callApi('/events/create', 'POST',
-            body={
-              ...this.state.events[i],
-              email: config.email,
-              date: this.makeDateString()
-            }).then( (res) => {
-              console.log("event added");
-              console.log(res);
-            })
-        }
+    if (mm < 10) {
+      mm = '0' + mm;
+    }
+
+    today = yyyy + '-' + mm + '-' + dd;
+
+    getTodayHealth(new Date(today))
+      .then(data => {
+        callApi('/days/create', 'POST',
+          body={
+            email: config.email,
+            mood: this.state.mood,
+            info: {
+              steps: data.steps,
+              sleep: data.sleep
+            },
+            date: this.makeDateString() // figure out how to get this thing
+          }).then( (res) => {
+            console.log('got response')
+            console.log(res);
+
+            for ( let i = 0; i < this.state.events.length; i++ ) {
+              console.log("event adding " + i);
+              console.log(this.state.events[i])
+
+              callApi('/events/create', 'POST',
+                body={
+                  ...this.state.events[i],
+                  email: config.email,
+                  date: this.makeDateString()
+                }).then( (res) => {
+                  console.log("event added");
+                  console.log(res);
+                })
+            }
+          })
       })
   }
 
   // =================================================================================
   // MODAL HELPER FUNCTIONS ==========================================================
-  // creates event, exits modal, and resets all event values to default 
+  // creates event, exits modal, and resets all event values to default
   createEvent() {
     if( this.state.event.mood === '' ) {
       Alert.alert('Missing Mood', 'Please select a mood.', [],{cancelable: true});
@@ -214,14 +231,14 @@ export default class DailyLog extends Component {
     this.setEventColor('powderblue','powderblue','powderblue');
   }
 
-  // exits modal and resets all event values to default 
+  // exits modal and resets all event values to default
   cancelEvent() {
     this.setState({modalVisible: !this.state.modalVisible});
 
     this.setState({event: {...this.event,
       name: '',
       mood: ''
-    }}); 
+    }});
     this.setEventColor('powderblue','powderblue','powderblue');
   }
 
@@ -249,8 +266,8 @@ export default class DailyLog extends Component {
   // helper function for setting the dayColor variable
   setDayColor(happy, neutral, sad) {
     this.setState({dayColor: {
-      happyColor: happy, 
-      neutralColor: neutral, 
+      happyColor: happy,
+      neutralColor: neutral,
       sadColor: sad}} );
   }
 
@@ -274,8 +291,8 @@ export default class DailyLog extends Component {
   // helper function for setting the eventColor variable
   setEventColor(happy, neutral, sad) {
     this.setState({eventColor: {
-      happyColor: happy, 
-      neutralColor: neutral, 
+      happyColor: happy,
+      neutralColor: neutral,
       sadColor: sad}} );
   }
 
@@ -292,7 +309,7 @@ export default class DailyLog extends Component {
 }
 
 // =================================================================================
-// STYLES 
+// STYLES
 const styles = StyleSheet.create({
   scene: {
     padding: 40,
@@ -325,7 +342,7 @@ const styles = StyleSheet.create({
   deleteImage: {
 
   },
-  
+
 
   // MODAL STYLES =====================================================
   input: {

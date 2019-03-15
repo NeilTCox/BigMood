@@ -1,9 +1,5 @@
 const config = require('../config');
 
-function isEmpty(obj) {
-  return Object.entries(obj).length === 0 && obj.constructor === Object;
-}
-
 export function callApi(extension, method, body={}, params={}) {
   method = method.toUpperCase();
   extension = extension.charAt(0) === '/' ? extension : `/${extension}`;
@@ -31,7 +27,7 @@ export function callApi(extension, method, body={}, params={}) {
     });
 }
 
-export function callFitApi(extension, method, body={}, params={}) {
+export async function callFitApi(extension, method, body={}, params={}) {
   method = method.toUpperCase();
   extension = extension.charAt(0) === '/' ? extension : `/${extension}`;
   let apiUrl = `${config.fitEndpoint}${extension}`;
@@ -51,17 +47,13 @@ export function callFitApi(extension, method, body={}, params={}) {
   if (method !== 'GET' && method !== 'HEAD') {
     fetchObject.body = JSON.stringify(body);
   }
-  return fetch(apiUrl, fetchObject)
-    .then(function(res) {
-      return res.json().then(function(data) {
-        return data;
-      });
-    });
+  const res = await fetch(apiUrl, fetchObject)
+  return await res.json()
 }
 
-export function getDailySteps(date) {
+export async function getDaySteps(date) {
   const startTime = date.getTime();
-  return callFitApi('/users/me/dataset:aggregate', 'POST', {
+  const data = await callFitApi('/users/me/dataset:aggregate', 'POST', {
     "aggregateBy": [{
       "dataTypeName": "com.google.step_count.delta",
       "dataSourceId": "derived:com.google.step_count.delta:com.google.android.gms:estimated_steps"
@@ -69,26 +61,56 @@ export function getDailySteps(date) {
     "bucketByTime": { "durationMillis": 86400000 },
     "startTimeMillis": startTime,
     "endTimeMillis": startTime + 86400000
-  }, {})
-  .then((data) => {
-    return {
-      stepCount: data.bucket[0].dataset[0].point[0].value[0].intVal,
-      date: new Date(parseInt(data.bucket[0].startTimeMillis))
-    }
+  }, {}).catch((err) => {
+    return undefined
   });
+  if (!data || data.error) {
+    return undefined;
+  }
+  console.log(data)
+  if (data.bucket[0].dataset[0].point.length === 0) {
+    return 0;
+  }
+  return data.bucket[0].dataset[0].point[0].value[0].intVal
 }
 
-// export function getDailySleep(date) {
-//   const startTime = date.getTime();
-//   return callFitApi('/users/me/sessions', 'GET', {}, {})
-//   .then((data) => {
-//     console.log(data);
-//     // return {
-//     //   stepCount: data.bucket[0].dataset[0].point[0].value[0].intVal,
-//     //   date: new Date(parseInt(data.bucket[0].startTimeMillis))
-//     // }
-//   });
-// }
+export async function getDaySleep(date) {
+  let startTime = `${date.getFullYear()}-${date.getMonth()}-${date.getDay()}`+'T01:00:00Z'
+  date.setDate(date.getDate()+1);
+  let endTime = `${date.getFullYear()}-${date.getMonth()}-${date.getDay()}`+'T01:00:00Z'
+  const googleRes = await callFitApi('/users/me/sessions', 'GET', {}, { startTime, endTime }).catch((err) => undefined);
+  if (googleRes !== undefined && !googleRes.error) {
+    let hours = 0;
+    for (act of googleRes.session) {
+      if (act.activityType === 72) {
+        let millisDiff = parseInt(act.endTimeMillis) - parseInt(act.startTimeMillis);
+        hours += (millisDiff / (1000 * 60 * 60)).toFixed(1)
+      }
+    }
+    return hours;
+
+  } else {
+    return undefined
+  }
+}
+
+export async function getDayHealth(date) {
+  let steps = await getDaySteps(date)
+  let sleep = await getDaySleep(date)
+  if (steps === undefined) {
+    steps = 2000
+  }
+  if (sleep === undefined) {
+    sleep = 8
+  }
+  return { steps, sleep }
+}
+
+export async function getTodayHealth() {
+  const current = new Date()
+  current.setDate(current.getDate()-1)
+  return await getDayHealth(current)
+}
 
 export function sendPastWeekStepData() {
   let current = new Date(currentDate());
@@ -112,3 +134,6 @@ function currentDate() {
   return new Date(new Date().toJSON().slice(0,10).replace(/-/g,'/'));
 }
 
+function isEmpty(obj) {
+  return Object.entries(obj).length === 0 && obj.constructor === Object;
+}

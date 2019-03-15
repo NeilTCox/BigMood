@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Alert, Image, Text, TouchableOpacity, StyleSheet, TextInput, View, TouchableHighlight } from 'react-native';
-import { callApi, getDailySleep } from '../libs/apihelper';
+import { callApi } from '../libs/apihelper';
 
 export default class SignIn extends Component {
   constructor(props) {
