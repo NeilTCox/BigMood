@@ -128,7 +128,7 @@ export default class ActivityCalendar extends Component {
   render() {
     return (
       <View>
-        <CalendarList style={styles.calendarlist}
+        <CalendarList
           // Enable horizontal scrolling, default = false
           horizontal={true}
           // Enable paging on horizontal, default = false
@@ -177,9 +177,6 @@ const styles = StyleSheet.create({
   scene: {
     flex: 1,
   },
-  calendarlist: {
-    marginTop: 22,
-  },
   dayHeader: {
     flex: 1,
     flexDirection: 'row',
@@ -187,7 +184,6 @@ const styles = StyleSheet.create({
     height: 200,
   },
   date: {
-    marginTop: 10,
     marginLeft: 10,
     width: 225,
     height: 50,
@@ -234,7 +230,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   activities: {
-    marginTop: 200,
+    marginTop: 180,
     marginLeft: 25,
     marginRight: 25,
   },

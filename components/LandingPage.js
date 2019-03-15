@@ -47,13 +47,11 @@ const styles = StyleSheet.create({
     padding: 60,
     flex: 1,
     flexDirection: 'column',
-    fontFamily: 'sans-serif-thin',
     alignItems: 'center',
     justifyContent: 'center', 
   },
   title: {
     padding: 30,
-    fontFamily: 'sans-serif-thin',
     fontSize: 30,
     fontWeight: 'bold',
   },
