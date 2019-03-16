@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Alert, AppRegistry, Button, FlatList, Icon, Image, ListItem, Modal, StyleSheet, TextInput, Text, TouchableHighlight, View} from 'react-native';
+import { Alert, AppRegistry, Button, FlatList, Icon, ListItem, Modal, StyleSheet, TextInput, Text, TouchableHighlight, View} from 'react-native';
 import { callApi, getTodayHealth } from '../libs/apihelper';
 const config = require('../config');
 
@@ -57,13 +57,13 @@ export default class DailyLog extends Component {
         <Text style={styles.subtitleText}>What did you do today?</Text>
         <FlatList
           data={this.state.events}
+          extraData={this.state}
           renderItem={ ({item}) =>
             <View style={styles.eventView} >
               <Text style={styles.eventNameText}>{item.name}</Text>
               <Text>{item.mood}</Text>
             </View>
           }
-
         />
         <Modal
           animationType="fade"
@@ -202,6 +202,14 @@ export default class DailyLog extends Component {
                   console.log(res);
                 })
             }
+
+            var caption = 'Submitted today\'s events and activity data.'
+            if (this.state.events.length === 0) {
+              caption = 'Submitted today\'s activity data.'
+            }
+
+            Alert.alert('Success!', caption, [],{cancelable: true})
+            //this.state.events.length = 0  // delete the current collection of events (doesn't update the main FlatList visually!!)
           })
       })
   }
