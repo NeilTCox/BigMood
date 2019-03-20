@@ -1,4 +1,4 @@
-# Big Mood
+# BigMood
 This is the front end of the BigMood app. Uses the BigMoodAPI. See backend [here](https://github.com/johncqr/BigMoodApi).
 
 # File Explanations
